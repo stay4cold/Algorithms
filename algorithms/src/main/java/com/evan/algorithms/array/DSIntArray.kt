@@ -35,13 +35,13 @@ class DSIntArray @JvmOverloads constructor(private var capacity: Int = DEFAULT_C
         len = 0
     }
 
-    override fun add(elm: Int) {
+    override fun add(elm: Int?) {
         if (len + 1 >= capacity) {
             if (capacity == 0) capacity = 1
             else capacity *= 2
             arr = arr.copyOf(capacity)
         }
-        arr[len++] = elm
+        arr[len++] = elm!!
     }
 
     override fun removeAt(index: Int): Int {

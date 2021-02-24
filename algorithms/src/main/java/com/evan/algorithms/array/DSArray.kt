@@ -5,7 +5,7 @@ package com.evan.algorithms.array
  * Date:    2021-02-24
  * Description:
  */
-interface DSArray<T> : Iterable<T> {
+interface DSArray<T> : Iterable<T?> {
 
     fun size(): Int
 
@@ -17,9 +17,9 @@ interface DSArray<T> : Iterable<T> {
 
     fun clear()
 
-    fun add(elm: T)
+    fun add(elm: T?)
 
-    fun removeAt(index: Int): T
+    fun removeAt(index: Int): T?
 
     fun remove(elm: Any?): Boolean
 

@@ -37,35 +37,80 @@ class DSDynamicArray<T> @JvmOverloads constructor(private var capacity: Int = DE
         len = 0
     }
 
-    override fun add(elm: T) {
-        TODO("Not yet implemented")
+    override fun add(elm: T?) {
+        if (len + 1 >= capacity) {
+            if (capacity == 0) capacity = 1
+            else capacity *= 2
+            arr.copyOf(capacity)
+        }
+        arr[len++] = elm
     }
 
-    override fun removeAt(index: Int): T {
-        TODO("Not yet implemented")
+    override fun removeAt(index: Int): T? {
+        if (index < 0 || index >= len) throw IndexOutOfBoundsException()
+        val data = arr[index]
+        arr.copyInto(arr, index, index + 1, len)
+        len--
+        return data
     }
 
     override fun remove(elm: Any?): Boolean {
-        TODO("Not yet implemented")
+        val index = indexOf(elm)
+        if (index != -1) {
+            removeAt(index)
+            return true
+        }
+        return false
     }
 
     override fun indexOf(elm: Any?): Int {
-        TODO("Not yet implemented")
+        for ((index, value) in arr.withIndex()) {
+            if (value == elm) return index
+        }
+        return -1
     }
 
-    override fun contains(elm: Any?): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun contains(elm: Any?): Boolean = indexOf(elm) != -1
 
     override fun toString(): String {
-        TODO("Not yet implemented")
+        return if (len == 0) "[]"
+        else {
+            val sb = StringBuilder("[")
+            for (i in 0 until len - 1) {
+                sb.append("${arr[i]}, ")
+            }
+            sb.append("${arr[len - 1]}]")
+            sb.toString()
+        }
     }
 
-    override fun iterator(): Iterator<T> {
-        TODO("Not yet implemented")
+    override fun iterator(): MutableIterator<T?> = object : MutableIterator<T?> {
+        private var index = 0
+
+        override fun hasNext(): Boolean = index < len
+
+        override fun next(): T? = arr[index++]
+
+        override fun remove() = throw UnsupportedOperationException()
+
     }
 
     companion object {
         private const val DEFAULT_CAP = 1 shl 4
+
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val ar = DSDynamicArray<String>(10)
+            ar.add("123")
+            ar.add("456")
+            ar.add("789")
+            println(ar)
+            ar.removeAt(1)
+            println(ar)
+            ar.remove("123")
+            println(ar)
+            ar.clear()
+            println(ar)
+        }
     }
 }
