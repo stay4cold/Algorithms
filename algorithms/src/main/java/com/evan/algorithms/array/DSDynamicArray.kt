@@ -41,7 +41,7 @@ class DSDynamicArray<T> @JvmOverloads constructor(private var capacity: Int = DE
         if (len + 1 >= capacity) {
             if (capacity == 0) capacity = 1
             else capacity *= 2
-            arr.copyOf(capacity)
+            arr = arr.copyOf(capacity)
         }
         arr[len++] = elm
     }
